@@ -1,0 +1,52 @@
+
+auth-server-url: http://127.0.0.1:8083
+server:
+  port: 8083
+
+spring:
+  application:
+    name: AUTH-SERVER
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://192.168.2.208:3306/auth_server_dev?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+  redis:
+    database: 2
+    host: 10.1.1.176
+    jedis:
+      pool:
+        max-active: 100
+        max-wait: 2000
+        max-idle: 500
+        min-idle: 8
+    timeout: 5000
+    port: 32701
+  data:
+    mongodb:
+      uri: mongodb://localhost/uc_server_${spring.profiles.active}
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+
+seaboxdata:
+  core:
+    idgenerator:
+      mode: snowflake
+      datacenter: 1
+      worker: 1
+  auth:
+    hostname:
+    host:
+    url: http://127.0.0.1:8083
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka
+
+#rocketmq:
+#  name-server: 10.1.1.176:9876
+#  producer:
+#    send-message-timeout: 3000
+#    group: auth_${spring.profiles.active}

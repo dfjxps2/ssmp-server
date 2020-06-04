@@ -1,0 +1,595 @@
+##################
+#
+#   用户信息
+#
+##################
+extend type Query {
+    # 获取全部用户 #
+    authSelectAllUser(input:AuthUserNamePageInput):PaginationResult
+    # 根据用户Id  获取用户信息 #
+    selectUserByUserId(input:[ID!]!):[OauthUserVO]
+    # 根据roleId  寻找所属角色下的人员信息 #
+    selectUserByRoleId(input:AuthRoleIdInput):[OauthUserVO]
+    # 获取当前登陆用户信息 #
+    getLoginUser:OauthUserVO
+    # 判断username 是否存在 #
+    checkUserName(username:String!,userId:ID):Boolean
+    # 根据姓名或工号查询人员 #
+    authSelectUserByNameOrCard(input:AuthUserParamInput):[OauthUserVO]
+    # 一个用户 -> 多个角色 #
+    saveOrUpdateRoleUser(userId:ID!,roleIds:[ID]!):Boolean
+    # 一个用户 -> 多个分组 #
+    saveOrUpdateGroupUser(userId:ID!, groupIds:[ID]!):Boolean
+    selectIP:String
+    # 内部管理系统获取全部用户 #
+    selectJxpmAllUser(input:OauthUserNamePageDTO):PaginationJxpmUserResult
+
+}
+extend type Mutation {
+    # 新建用户 #
+    registerUser(input:OauthSaveUserDTO!):Boolean
+    # 删除用户 #
+    deleteOauthUser(input:[ID]):Boolean
+    # 修改用户信息 #
+    updateOauthUser(input:OauthSaveUserDTO!):Boolean
+    # 用户登陆 #
+    authLogin(input:LoginUserInput!):OauthUserVO
+    # 用户注销 #
+    logoutUser:Boolean
+    # 删除头像 #
+    deleteAmbryById(ambryId:String):AmbryBaseResponse
+    # 修改密码 #
+    updateUserPwd(input:PwdInput!):Boolean
+    # 同步bj-cas数据 #
+    synchData(password:String):Boolean
+    # 修改用户对应角色 #
+    updateUserRoleByUserId(input:OauthSaveUserDTO!):Boolean
+}
+
+input OauthUserNamePageDTO{
+    # 用户名 #
+    name:String
+
+    # 分组Id #
+    groupId:ID
+
+    # 机构Id #
+    organizationId:ID
+
+    # 员工等级Id #
+    staffLevelId: ID
+
+    # 分页条数 #
+    limit:Int
+
+    # 起始页 #
+    offset:Int
+}
+
+type PaginationJxpmUserResult{
+
+    # 分页条数 #
+    limit:Int
+
+    # 起始页 #
+    offset:Int
+
+    # 总条数 #
+    total:Int
+
+    # data #
+    jxpmUsers:[OauthJxpmUserVO]
+}
+
+type OauthJxpmUserVO{
+
+    # 用户Id #
+    userId:ID!
+
+    # 登录账号 #
+    username:String
+
+    # 用户密码 #
+    password:String
+
+    # 租户Id #
+    tenantId:ID
+
+    # 租户名称 #
+    tenantName:String
+
+    # 直属领导 #
+    directLeader: OauthUserVO
+
+    ### 租户海贝值 ###
+    virtualCurrency:ID
+
+    ### 名称 ###
+    name:String
+
+    # 是否为租户管理员 #
+    tenantManager:Boolean
+
+    ### 电话号码 ###
+    phoneNumber:String
+
+    # 电子邮箱 #
+    email:String
+
+    # 主固定电话 #
+    fixedPhoneNumber:String
+
+    # 主传真号码 #
+    faxNumber:String
+
+    # 状态: 1-可用，0-禁用 #
+    enabled:Boolean
+
+    # 工号 #
+    jobNumber:String
+
+    # 用户性别 #
+    userSex:Int
+
+    # 用户生日 #
+    userBirthday:String
+
+    # 用户职位 #
+    position:String
+
+    # 用户职称 #
+    title:String
+
+    # 外包公司名称 #
+    outsourcingCompany:String
+
+    # 外包公司电话 #
+    outsourcingPhone:String
+
+    # 个人介绍 #
+    personalSignature:String
+
+    # 最高学历
+    maxEducation:String
+
+    # 身份证号
+    identifyNum:String
+
+    # 星座
+    constellation: String
+
+    # 户籍地址
+    residenceAddress:String
+
+    # 用户头像 #
+    userAvatar:String
+
+    # 附件：存放名片
+    userAttachment:String
+
+    # 用户地址 #
+    userAddress:String
+
+    # 角色名称 #
+    roleName:String
+
+    # 租户级别 #
+    tenantLevel:Int
+
+    # 最后登录时间 #
+    lastLoginTime:LocalDateTime
+
+    # 员工等级
+    staffLevelVo: StaffLevelVo
+
+    # 是否为系统管理员 大兴 #
+    systemManager:Boolean
+
+}
+
+# 修改密码入参 #
+input PwdInput{
+    # 原始密码 #
+    originalPwd:String!
+
+    # 新密码 #
+    newPwd:String!
+}
+
+type AmbryBaseResponse{
+    code:Int
+    status:String
+    message:String
+}
+
+# 根据姓名或工号查询人员传入参数 #
+input AuthUserParamInput{
+    # 姓名或工号 #
+    keyWords:String
+
+    # 租户ID #
+    tenantId:ID
+}
+
+# 获取全部用户 传入过滤参数 #
+input AuthUserNamePageInput{
+    # 用户名 #
+    name:String
+
+    # 分组Id #
+    groupId:ID
+
+    # 机构Id #
+    organizationId:ID
+
+    # 员工等级Id #
+    staffLevelId: ID
+
+    # 分页条数 #
+    limit:Int
+
+    # 起始页 #
+    offset:Int
+}
+
+# 查询全部用户分页返回值 #
+type PaginationResult{
+
+    # 总记录数 #
+    total:Int
+    # 偏移 #
+    offset:Int
+    # 每页记录数 #
+    limit:Int
+    # 结果集 #
+    data:[OauthUserVO]
+
+}
+
+# 分页条件 #
+input PageDTO{
+    # 分页条数 #
+    pageSize:Int!
+
+    # 起始页 #
+    pageIndex:Int!
+}
+
+# 登陆传入对象
+input LoginUserInput{
+
+    # 登录账号 #
+    username:String!
+
+    # 密码 #
+    password:String!
+
+    # 一周免登陆 #
+    rememberMe:Boolean
+
+}
+
+# 用户登陆返回值 #
+type LoginUserVO{
+
+    # 用户Id #
+    id:ID!
+
+    # 用户名 #
+    name:String
+
+    # 用户账号 #
+    username:String
+
+    # accessToken码 #
+    accessToken:String
+
+    # refreshToken码 #
+    refreshToken:String
+
+    # 用户联系方式 #
+    userInfoVOS:[OauthUserInfoVO]
+
+}
+
+# 用户联系方式返回值 #
+type OauthUserInfoVO{
+    # 联系类型 #
+    contact:ContactEnum
+
+    # 联系方式描述 #
+    infoDesc:String
+
+    # 联系信息 #
+    information:String
+
+    # 是否为主联系方式 #
+    isPrimary:Boolean
+
+}
+
+# 新建用户传入参数 #
+input OauthSaveUserDTO{
+    # 主键id #
+    id:ID
+
+    # 登录账号 #
+    username:String
+
+    # 名称 #
+    name:String
+
+    ### 密码 ###
+    password:String
+
+    # 电话号码 #
+    phoneNumber:String
+
+    # 电子邮箱 #
+    email:String
+
+    # 租户ID #
+    tenantId:ID
+
+    # 用户联系方式 #
+    oauthUserInfos:[OauthUserInfoDTO]
+
+    # 直属领导 #
+    directLeader: ID
+
+    # 工号 #
+    jobNumber:String
+
+    # 状态: 1-可用，0-禁用 #
+    enabled:Boolean
+
+    # 用户性别 #
+    userSex:Int
+
+    # 用户生日 #
+    userBirthday:String
+
+    # 外包公司名称 #
+    outsourcingCompany:String
+
+    # 外包公司电话 #
+    outsourcingPhone:String
+
+    # 用户职位 #
+    position:String
+
+    # 用户职称 #
+    title:String
+
+    # 个人介绍 #
+    personalSignature:String
+
+    # 用户头像 #
+    userAvatar:String
+
+    # 用户地址 #
+    userAddress:String
+
+    # 最高学历
+    maxEducation:String
+
+    # 身份证号
+    identifyNum:String
+
+    # 星座
+    constellation: String
+
+    # 户籍地址
+    residenceAddress:String
+
+    # 附件：存放名片
+    userAttachment:String
+
+    # 传入角色Ids
+    roleIds : [ID]
+
+    # 传入分组Ids #
+    groupIds: [ID]
+
+    # 传入机构Ids #
+    organizationIds:[ID]
+
+    # 毕业相关信息
+    graduationInfos:[GraduationInfoDTO]
+
+    # 技能信息
+    skillInfos:[SkillInfoDTO]
+
+    # 员工等级
+    staffLevelDTO: StaffLevelDTO
+    # 是否为系统管理员 大兴 #
+    systemManager:Boolean
+
+}
+
+# 联系方式enum #
+enum ContactEnum{
+    # 固定电话 #
+    FIXEDTELEPHONE,
+    # 移动电话 #
+    MOBILEPHONE,
+    # 传真号码 #
+    FAXNUMBER,
+    # 邮箱 #
+    MAILBOX
+}
+
+# 用户联系方式 #
+input OauthUserInfoDTO{
+    # 联系类型 #
+    contact:ContactEnum
+
+    # 联系信息 #
+    information:String
+
+    # 是否为主联系方式 #
+    isPrimary:Boolean!
+
+    #  联系方式描述 #
+    infoDesc:String
+
+    # 用户ID #
+    userId:ID
+}
+
+# 获取全部用户返回的VO #
+type OauthUserVO{
+
+    # 用户Id #
+    userId:ID!
+
+    # 登录账号 #
+    username:String
+
+    # 用户密码 #
+    password:String
+
+    # 租户Id #
+    tenantId:ID
+
+    # 租户名称 #
+    tenantName:String
+
+    # 直属领导 #
+    directLeader: OauthUserVO
+
+    ### 租户海贝值 ###
+    virtualCurrency:ID
+
+    ### 名称 ###
+    name:String
+
+    # 是否为租户管理员 #
+    tenantManager:Boolean
+
+    ### 电话号码 ###
+    phoneNumber:String
+
+    # 电子邮箱 #
+    email:String
+
+    # 主固定电话 #
+    fixedPhoneNumber:String
+
+    # 主传真号码 #
+    faxNumber:String
+
+    # 状态: 1-可用，0-禁用 #
+    enabled:Boolean
+
+    # 工号 #
+    jobNumber:String
+
+    # 用户性别 #
+    userSex:Int
+
+    # 用户生日 #
+    userBirthday:String
+
+    # 用户职位 #
+    position:String
+
+    # 用户职称 #
+    title:String
+
+    # 外包公司名称 #
+    outsourcingCompany:String
+
+    # 外包公司电话 #
+    outsourcingPhone:String
+
+    # 个人介绍 #
+    personalSignature:String
+
+    # 最高学历
+    maxEducation:String
+
+    # 身份证号
+    identifyNum:String
+
+    # 星座
+    constellation: String
+
+    # 户籍地址
+    residenceAddress:String
+
+    # 用户头像 #
+    userAvatar:String
+
+    # 附件：存放名片
+    userAttachment:String
+
+    # 用户地址 #
+    userAddress:String
+
+    # 角色名称 #
+    roleName:String
+
+    # 租户级别 #
+    tenantLevel:Int
+
+    # 最后登录时间 #
+    lastLoginTime:LocalDateTime
+
+    # 是否为系统用户 #
+    systemUser:Boolean
+
+    # 用户角色信息 #
+    roles:[OauthRoleVO]
+
+    # 机构信息 #
+    organizations:[OauthOrganizationVO]
+
+    # 用户分组信息 #
+    groups:[OauthGroupVO]
+
+    # 用户联系方式 #
+    userInfoVOS:[OauthUserInfoVO]
+
+    # 毕业信息列表
+    graduationInfoVos: [GraduationInfoVo]
+
+    # 技能信息列表
+    skillInfoVos:[SkillInfoVo]
+
+    # 员工等级
+    staffLevelVo: StaffLevelVo
+
+    # 当前登录用户权限码 #
+    permissionCodes:[String]
+
+    # 权限对应系统 #
+    appKeys:[String]
+
+    # 是否为系统管理员 大兴 #
+    systemManager:Boolean
+
+}
+
+# 获取全部用户中的用户角色信息 #
+type OauthRoleVO{
+
+    id:ID!
+
+    # 角色名称 #
+    roleName:String
+
+    # 角色码 #
+    roleCode:String
+
+    # 可用状态 0：不可用  1：可用 #
+    status:Int
+
+    # 角色父ID #
+    parentId:ID
+
+    # 描述 #
+    description:String
+
+}
+

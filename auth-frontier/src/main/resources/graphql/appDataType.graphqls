@@ -1,0 +1,87 @@
+##################
+#
+#   应用地址
+#
+##################
+extend type Query {
+    # 获取全部应用数据信息 #
+    selectAllDataType(input:AppDataTypeInput):[AppDataTypeVO]
+}
+
+extend type Mutation {
+    # 增加或修改应用数据类型 #
+    saveOrUpdateDataType(input:AppDataTypeParamInput!):Boolean
+    # 删除应用数据类型信息 #
+    deleteDateType(input:[ID!]!):Boolean
+    # 移动应用数据位置 #
+    operationDataType(input:AppDataOperationInput!):Boolean
+}
+
+# 移动应用数据位置 传入参数 #
+input AppDataOperationInput{
+    # 本次操作的dataTypeId #
+    sourceDataTypeId:ID!
+
+    # 目标移动的dataTypeId #
+    targetDataTypeId:ID!
+
+    # true:上移 false:下移 #
+    moveOperation:Boolean!
+}
+
+# 查询全部 模糊查参数 #
+input AppDataTypeInput{
+    # date type id #
+    dataTypeId:ID
+
+    # 关键字搜索 #
+    keyWords:String
+}
+
+# 增加或修改传入参数 #
+input AppDataTypeParamInput{
+    # date type id #
+    dataTypeId:ID
+
+    # 应用数据类型分类 #
+    dataTypeName:String
+
+    # 应用数据类型url #
+    url:String
+
+    # level级别 #
+    level:Int
+
+    # 序号 #
+    orderNumber:Int
+
+    # 跳转类型 #
+    jumpMode:String
+
+    # 级别父Id #
+    parentId:ID
+}
+
+# 查询全部返回类型 #
+type AppDataTypeVO{
+    # date type id #
+    dataTypeId:ID
+
+    # 应用数据类型分类 #
+    dataTypeName:String
+
+    # 应用数据类型url #
+    url:String
+
+    # level级别 #
+    level:Int
+
+    # 序号 #
+    orderNumber:Int
+
+    # 跳转类型 #
+    jumpMode:String
+
+    # 级别父Id #
+    parentId:ID
+}

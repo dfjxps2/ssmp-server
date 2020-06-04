@@ -1,0 +1,7 @@
+spring:
+  redis:
+    database: 1
+
+rocketmq:
+  producer:
+    env: dev

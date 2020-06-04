@@ -1,0 +1,106 @@
+auth-server-url: http://localhost:30002
+
+server:
+  port: 30001
+  http:
+    port: 30003
+#  ssl:
+#    key-alias: client
+#    key-store: classpath:/client.p12
+#    key-store-password: 123456
+#    key-store-type: PKCS12
+ssl:
+  key-store: classpath:/keystore.p12
+  key-store-password: gd123456
+  keyAlias: tomcat
+  keyStoreType: PKCS12
+
+spring:
+  application:
+    name: AUTH-FRONTIER
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    jedis:
+      pool:
+        max-active: 100
+        max-wait: 2000
+        max-idle: 500
+        min-idle: 8
+    timeout: 5000
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled: true
+    corsEnabled: true
+    exception-handlers-enabled: true
+
+seaboxdata:
+  core:
+    idgenerator:
+      mode: snowflake
+      datacenter: 1
+      worker: 1
+  auth:
+    hostname:
+    url: http://AUTH-SERVER
+  tag:
+    hostname:
+  mds:
+    hostname:
+
+
+security:
+  oauth2:
+    client:
+      client-id: testclientid
+      client-secret: 123456
+      scope: read_userinfo
+      access-token-uri: ${auth-server-url}/oauth/token
+      user-authorization-uri: ${auth-server-url}/oauth/authorize
+    resource:
+      token-info-uri: ${auth-server-url}/oauth/check_token
+      check-token: ${auth-server-url}/oauth/check_token
+
+cookie:
+  access-cookie-time: 600000
+
+token:
+  domain: localhost
+  access-token:
+    expiration-time: 600000
+  refresh-token:
+    expiration-time: 2592000 # 60 * 60 * 12 * 2 * 30
+
+logging:
+  level:
+    "org.springframework": info
+
+ambry:
+  host: ambry-client.default
+  port: 1174
+  temp-path: /tmp/
+  ttl: 10800
+
+login:
+  # 采用登录方式，AUTH（数研登录方式），CAS（采用数研的登录方式）
+  method: AUTH
+  url:
+    # 数研前端login登录页面路径
+    auth: http://login.jinxin.cloud/
+    # CAS登录路径
+    cas: http://auth-service.jinxin.cloud

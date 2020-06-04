@@ -1,0 +1,84 @@
+##################
+#
+#   权限
+#
+##################
+extend type Query {
+    # 获取permission列表(不区分系统) #
+    selectAllPermission(input:AuthSystemInput):[OauthPermissionVO]
+    # 根据roleId 获取对应permission #
+    selectPermissionByRoleId(input:AuthRoleIdInput!):[OauthPermissionVO]
+    # 根据权限码获取拥有权限的人 #
+    selectUserIdByPermissionCodes(permissionCodes:[String]):[ID]
+}
+
+extend type Mutation {
+    # 根据角色Id 增加/修改权限许可 #
+    saveOrUpdatePermissionByRoleId(input:AuthPermissionSaveInput!):Boolean
+    # 批量增加权限许可 #
+    savePermissions(input:[AuthPermissionInput!]!):Boolean
+}
+
+# 批量增加权限许可 #
+input AuthPermissionInput{
+    # 权限名称 #
+    permissionName:String!
+
+    # 权限码 #
+    permissionCode:String!
+
+    # 父Id #
+    parentId:ID!
+
+    # 资源详情 #
+    description:String!
+
+    # 是否拥有该权限 #
+    flag:Boolean
+
+    # 应用名称 #
+    appName:AppKeyEnum
+}
+
+# 根据角色获取对应权限传入参数 #
+input AuthRoleIdInput{
+    # 角色ID #
+    roleId:ID!
+    # 应用名称 #
+    appName:AppKeyEnum
+}
+
+# 根据角色Id 增加修改权限 传入参数 #
+input AuthPermissionSaveInput{
+
+    # 所添加权限Id #
+    permissionIds:[ID!]!
+
+    # 角色Id #
+    roleId:ID!
+
+    # 应用名称 #
+    appName:AppKeyEnum
+}
+
+# 获取权限许可列表 #
+type OauthPermissionVO{
+
+    # 权限资源Id #
+    permissionId:ID
+
+    # 权限名称 #
+    permissionName:String
+
+    # 权限码 #
+    permissionCode:String
+
+    # 父Id #
+    parentId:ID
+
+    # 资源详情 #
+    description:String
+
+    # 是否拥有该权限 #
+    flag:Boolean
+}

@@ -1,0 +1,56 @@
+type StaffLevelVo{
+    # 主键id
+    id: ID
+
+    # 等级名称
+    levelName: String
+
+    # 等级描述
+    levelDescription: String
+
+    # 工时核算
+    workingHour: Int
+
+    # 对外报价
+    externalOffer: Int
+
+    # 修改者
+    modifier: OauthUserVO
+
+    # 最后修改时间
+    modifyTime: LocalDateTime
+}
+
+input StaffLevelDTO{
+
+    # 主键id
+    id: ID
+
+    # 等级名称
+    levelName: String
+
+    # 等级描述
+    levelDescription: String
+
+    # 工时核算
+    workingHour: Int
+
+    # 对外报价
+    externalOffer: Int
+
+}
+
+extend type Query {
+    # 根据关键字查员工等级
+    getStaffLevelList(searchKey: String):[StaffLevelVo]
+}
+
+
+extend type Mutation {
+    # 保存员工等级
+    saveStaffLevel(input: StaffLevelDTO): Boolean
+    # 删除等级
+    deleteStaffLevel(id:ID):Boolean
+    # 修改员工等级
+    updateStaffLevel(input: StaffLevelDTO):Boolean
+}

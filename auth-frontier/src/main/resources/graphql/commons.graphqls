@@ -1,0 +1,35 @@
+# 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+
+interface Pagination {
+    total: Int!
+    offset: Int!
+    limit: Int!
+}
+
+interface Response {
+    success: Boolean!
+    msg:  String
+}
+
+enum Order {
+    asc
+    desc
+}
+
+input OrderItem {
+    field: String
+    order: Order
+}
+
+enum Gender {
+    male
+    female
+}
+
+scalar Date
+#scalar JSON
+
+# 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+type Query {_: Int}
+type Mutation {_: Int}
+type Subscription {_: Int}

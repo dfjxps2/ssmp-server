@@ -1,0 +1,19 @@
+##################
+#
+#   租户级别cdk
+#
+##################
+extend type Query {
+    # 校验激活码 #
+    checkActivationCode(activationCode:String):TenantCodeVO
+    # 校验当前登录用户是否存在激活的激活码 #
+    checkTenantCodeStatus:Boolean
+}
+
+# 校验激活码返回数据 #
+type TenantCodeVO{
+    # 当前租户级别名称 #
+    tenantLevelName:String
+    # 租户级别 #
+    tenantLevel:Int
+}

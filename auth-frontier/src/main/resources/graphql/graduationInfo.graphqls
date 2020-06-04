@@ -1,0 +1,57 @@
+type GraduationInfoVo{
+
+    # 主键id
+    id: ID
+
+    # 用户id
+    userId: ID
+
+    # 毕业院校名称
+    graduationSchool: String
+
+    # 学历
+    education: String
+
+    # 描述
+    description: String
+
+    # 入学时间
+    educationStartTime: LocalDateTime
+
+    # 毕业时间
+    graduateTime: LocalDateTime
+
+}
+
+
+input GraduationInfoDTO{
+    # 主键id
+    id:ID
+
+    # 用户id
+    userId: ID
+
+    # 毕业院校名称
+    graduationSchool: String
+
+    # 学历
+    education: String
+
+    # 描述
+    description: String
+
+    # 入学时间
+    educationStartTime: String
+
+    # 毕业时间
+    graduateTime: String
+}
+
+extend type Mutation {
+    # 更新毕业相关信息
+    updateGraduationInfo(input: GraduationInfoDTO): Boolean
+    # 删除毕业相关信息
+    deleteGraduationInfo(id: ID):Boolean
+    # 新增毕业信息
+    saveGraduationInfo(input: GraduationInfoDTO): ID
+}

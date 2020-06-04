@@ -1,0 +1,120 @@
+##################
+#
+#   机构
+#
+##################
+extend type Query {
+    # 查询全部机构列表及机构下用户信息 #
+    selectAllOrganization(input:AuthOrganizationParamInput):[OauthOrganizationVO]
+    # 根据用户Id获取机构信息 #
+    # 若flag=true 则判断用户权限 若flag=false 则直接查询用户所属机构 #
+    selectOrganizationByUserId(flag:Boolean):[OauthOrganizationVO]
+    # 查询当前租户下的所有机构名
+    selectAllOrganizationName:[OauthOrganizationRedisVo]
+}
+
+extend type Mutation {
+    # 保存或修改机构信息 #
+    saveOrUpdateOauthOrganization(input:AuthOrganizationInput!):Boolean
+    # 删除机构信息 #
+    deleteOauthOrganization(input:[ID!]!):Boolean
+}
+
+# 查询全部参数 #
+input AuthOrganizationParamInput{
+    # 机构Id #
+    organizationId:ID
+
+    # key words  #
+    keyWords:String
+
+    # 排序 true:正序 false:倒叙 #
+    order:Boolean!
+}
+
+# 添加或修改机构传入参数 #
+input AuthOrganizationInput{
+
+    # 机构Id  #
+    organizationId:ID
+
+    # 机构父Id #
+    parentId:ID
+
+    # 机构层级 #
+    level:Int
+
+    # 机构名称 #
+    organizationName:String
+
+    # 机构编号 #
+    organizationNumber:Int
+
+    # 机构编码 #
+    organizationCode:String
+
+    # 机构地址 #
+    organizationAddress:String
+
+    # 负责人姓名 #
+    managerName:String
+
+    # 负责人电话 #
+    managerPhone:String
+
+    # 负责人邮箱 #
+    managerMail:String
+}
+
+# 机构列表返回VO
+type OauthOrganizationVO{
+
+    # 机构ID #
+    organizationId:ID!
+
+    #父Id #
+    parentId:ID
+
+    # 机构名称 #
+    organizationName:String
+
+    # 机构编码 #
+    organizationCode:String
+
+    # 机构编号 #
+    organizationNumber:String
+
+    # 机构地址 #
+    organizationAddress:String
+
+    # 登录用户名 #
+    username:String
+
+    # 负责人姓名 #
+    managerName:String
+
+    # 负责人用户Id #
+    managerUserId:ID
+
+    # 负责人电话 #
+    managerPhone:String
+
+    # 负责人邮箱 #
+    managerMail:String
+
+    # 部门下人员信息 #
+    oauthUsers:[OauthUserVO]
+
+}
+
+# 查询全部机构名实体
+type OauthOrganizationRedisVo{
+    # 机构ID #
+    id:ID!
+
+    #父Id #
+    parentId:ID!
+
+    # 机构名称 #
+    organizationName:String!
+}

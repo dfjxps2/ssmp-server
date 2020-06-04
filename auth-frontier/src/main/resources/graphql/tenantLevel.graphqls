@@ -1,0 +1,54 @@
+##################
+#
+#   租户级别
+#
+##################
+extend type Query {
+    # 获取全部租户级别 #
+    selectTenantLevel:[TenantLevelVO]
+
+    # 检验当前租户是否满足创建用户的级别 #
+    checkTenantLevel:Boolean
+}
+
+extend type Mutation {
+    # 保存/修改租户级别 #
+    saveOrUpdateTenantLevel(input:TenantLevelInput):Boolean
+
+    # 删除用户级别信息 #
+    deleteTenantLevel(input:[ID]):Boolean
+}
+
+type TenantLevelVO{
+    # id #
+    id:ID
+
+    # 容纳人数 #
+    userCount:Int
+
+    # 开启状态 #
+    status:Boolean
+
+    # 租户级别 #
+    tenantLevel:Int
+
+    # 描述 #
+    description:String
+}
+
+input TenantLevelInput{
+    # id #
+    id:ID
+
+    # 容纳人数 #
+    userCount:Int
+
+    # 开启状态 #
+    status:Boolean
+
+    # 租户级别 #
+    tenantLevel:Int
+
+    # 描述 #
+    description:String
+}

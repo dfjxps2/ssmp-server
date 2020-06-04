@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serviceGroup>
+    <service name="axisServlet" targetNamespace="http://service.auth.taiji.com">
+        <description>axisServlet</description>
+        <schema schemaNamespace="http://service.auth.taiji.com"/>
+        <parameter name="ServiceClass" locked="false">com.seaboxdata.auth.server.axis.service.impl.DataAxisServiceImpl</parameter>
+        <!-- 接口中对外提供的方法 -->
+        <operation name="SynchronizedInfo">
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </operation>
+    </service>
+</serviceGroup>

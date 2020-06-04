@@ -1,0 +1,162 @@
+##################
+#
+#   租户
+#
+##################
+extend type Query {
+    # 获取全部租户(可模糊查) #
+    selectAllTenant(input:AuthTenantParamInput):[OauthResultTenantVO]
+    # 校验租户可用数量 #
+    checkTenantCount:Boolean
+}
+
+extend type Mutation {
+    # 新增租户信息 #
+    saveTenantUser(input:OauthRegisterTenantInput!):String!
+    # 修改租户信息 #
+    updateTenantUser(input:OauthUpdateTenantInput!):String!
+    # 修改租户启用状态 #
+    updateTenantStatus(input:AuthTenantStatusInput!):Boolean
+}
+
+# 修改租户状态 #
+input AuthTenantStatusInput{
+    # 租户Id #
+    tenantId:[ID]!
+
+    # true ：启用  false：禁用 #
+    isEnable:Boolean!
+}
+
+
+# 查询全部租户模糊查传入参数 #
+input AuthTenantParamInput{
+    # 租户Id #
+    tenantId:ID
+
+    # 租户名称 #
+    keyWords:String
+}
+
+# 新增租户传入参数 #
+input OauthRegisterTenantInput{
+
+    # 租户Id #
+    tenantId:ID
+
+    # 租户名称 #
+    tenantName:String!
+
+    # 租户编码 #
+    tenantCode:String!
+
+    # 描述 #
+    tenantDesc:String!
+
+    # 登录账号 #
+    username:String
+
+    # 名称 #
+    name:String
+
+    # 密码 #
+    password:String!
+
+    # 电话号码 #
+    phoneNumber:String!
+
+    # 电子邮箱 #
+    email:String!
+
+    # 租户级别Id #
+    tenantLevelId:ID!
+
+    # 租户管理员状态: 1-可用，0-禁用 #
+    enabled:Boolean
+}
+
+# 修改租户信息传入参数 #
+input OauthUpdateTenantInput{
+
+    # 租户ID #
+    tenantId:ID!
+
+    # 租户名称 #
+    tenantName:String
+
+    # 租户编码 #
+    tenantCode:String!
+
+    # 描述 #
+    tenantDesc:String
+
+    # 登录账号 #
+    username:String
+
+    # 名称 #
+    name:String
+
+    # 密码 #
+    password:String
+
+    # 电话号码 #
+    phoneNumber:String
+
+    # 电子邮箱 #
+    email:String
+
+    # 租户级别Id #
+    tenantLevelId:ID
+
+    # 租户管理员状态: 1-可用，0-禁用 #
+    enabled:Boolean
+}
+
+# 查询租户返回值 #
+type OauthResultTenantVO{
+
+    # 租户ID #
+    tenantId:ID
+
+    # 租户名称 #
+    tenantName:String
+
+    # 用户名称 #
+    username:String
+
+    # 租户编码 #
+    tenantCode:String
+
+    # 描述 #
+    tenantDesc:String
+
+    # 租户级别-激活码Id #
+    tenantCodeId:ID
+
+    # 管理员密码 #
+    password:String
+
+    # 状态 0:启用 1:未启用 #
+    status:Int
+
+    # 管理员姓名 #
+    managerName:String
+
+    # 管理员电话 #
+    managerPhone:String
+
+    # 管理员邮箱 #
+    managerMail:String
+
+    # 租户级别 #
+    tenantLevelId:Int
+
+    # 租户详情表 #
+    tenantInfoVO:TenantInfoVO
+
+    # 租户激活码 #
+    activityCode:String
+
+    # 租户管理员状态: 1-可用，0-禁用 #
+    enabled:Boolean
+}

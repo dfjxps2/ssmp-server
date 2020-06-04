@@ -1,0 +1,19 @@
+##################
+#
+#   平台等级
+#
+##################
+extend type Query {
+    # 判断当前平台用户是否已激活 #
+    checkPlatformStatus:Boolean
+    # 校验平台激活码 #
+    checkPlatformCode(activityCode:String):PlatformCodeVO
+}
+
+type PlatformCodeVO{
+    # 平台可创建租户数量 #
+    tenantUseCount:Int
+
+    # 平台使用到期时间 #
+    endTime:LocalDateTime
+}

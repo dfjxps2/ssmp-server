@@ -1,0 +1,70 @@
+##################
+#
+#   系统
+#
+##################
+extend type Query {
+    # 查询全部应用信息 #
+    selectAllSystem(input:AuthSystemInput):[OauthSystemVO]
+}
+
+input AuthSystemInput{
+    # 应用名称 #
+    appName:AppKeyEnum
+}
+
+# appkey Enum #
+enum AppKeyEnum{
+    MDS,
+    DQS,
+    DS,
+    DRD,
+    DRD2, # 资源目录2 #
+    DLC,
+    UC,
+    PMC,
+    D4A,
+    MDM, #主数据
+    SMCS, # 海盒大数据监控管理系统 #
+    SSM, # 海盒大数据安全管理系统 #
+    SHO, # 海盒大数据分布式数据挖掘系统 #
+    SAPI, # 海盒大数据微服务网关系统 #
+    SESB, # 海盒大数据企业服务总线系统 #
+    WASH, # 数据清洗 #
+    TAGMANAGER, # 二部标签管理 #
+    STORAGE, # 数据存储 #
+    DATATRANS, # 数据接入 #
+    LABEL, # 标签画像系统 #
+#    TRANS, # 数据融合
+    ETL, # 调度系统
+    WASHANDTRANS,   # 数据清洗融合系统 #
+    SHAREANDEXCHANGE,  # 共享交换系统 #
+    NETWORKSPIEDER,   # 网络爬虫系统 #
+    DATAREPORT,      # 数据填报系统 #
+    DATAQUERY,      # 数据查询服务系统 #
+    DATAVISUAL,      # 数据可视化系统 #
+    LOGMANAGE,      # 统一日志管理 #
+    BS,              #光大app #
+    RSP,            # 重庆三清 #
+    POPUPORTRAYAL,  # 人口画像 #
+    LEGALPORTRAYAL, # 法人画像 #
+    GISSERVICE,     # GIS地理空间服务 #
+    URBANPLANNING,   # 城市规划辅助 #
+    HNDSJMH, # 海南大数据局门户
+    HNWBAPP, # 海南外部系统对接
+    SMG, # 数据实时同步系统
+    DATAUPLOAD, # 文件上传系统
+    JXPM,   #项目管理
+    AI,#AI识别引擎
+}
+
+type OauthSystemVO{
+    # 应用名称 #
+    appName:AppKeyEnum
+
+    # 系统名称 #
+    systemName:String
+
+    # 系统描述 #
+    systemDesc:String
+}

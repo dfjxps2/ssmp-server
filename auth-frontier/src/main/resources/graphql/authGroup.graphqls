@@ -1,0 +1,89 @@
+##################
+#
+#   分组
+#
+##################
+extend type Query {
+    # 查询全部分组列表 #
+    selectAllGroup(input:AuthGroupInput):[OauthGroupVO]
+    # 根据分组Id  获取组内成员 #
+    authSelectUserByGroupId(input:AuthGroupInput!):PaginationResult
+    # 保存 一个分组 -> 多个用户 #
+    saveOrUpdateUserGroup(input:OauthUserGroupDTO):Boolean
+}
+
+extend type Mutation {
+    # 保存或修改分组信息 #
+    saveOrUpdateOauthGroup(input:AuthGroupSaveInput!):Boolean
+    # 删除分组信息 #
+    deleteOauthGroup(input:[ID!]!):Boolean
+}
+
+# 保存或修改分组传入参数 #
+input OauthUserGroupDTO{
+    groupId:ID!
+
+    addUserId:[ID]
+
+    deleteUserId:[ID]
+}
+
+### 保存或修改分组传入参数 ###
+input AuthGroupSaveInput{
+
+    # 分组Id #
+    groupId:ID
+
+    # 分组名称 #
+    groupName:String!
+
+    # 分组描述 #
+    groupDesc:String!
+
+    # 负责人姓名 #
+    managerName:String!
+
+    # 负责人电话 #
+    managerPhone:String!
+
+    # 负责人邮箱 #
+    managerMail:String!
+}
+
+# 传入分组ID #
+input AuthGroupInput{
+    # 分组Id #
+    groupId:ID!
+    # 偏移 #
+    offset:Int
+    # 每页记录数 #
+    limit:Int
+    # 查询条件 #
+    keyWords:String
+}
+
+# 查询全部返回VO #
+type OauthGroupVO{
+
+    # 分组Id #
+    groupId:ID!
+
+    # 分组名称 #
+    groupName:String
+
+    #  工作描述 #
+    groupDesc:String
+
+    # 登录用户名 #
+    username:String
+
+    # 负责人姓名 #
+    managerName:String
+
+    #  负责人电话 #
+    managerPhone:String
+
+    #  负责人邮箱 #
+    managerMail:String
+
+}

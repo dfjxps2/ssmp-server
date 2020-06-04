@@ -1,0 +1,104 @@
+auth-server-url: http://localhost:8080
+
+yunhost: 122.152.210.218
+
+spring:
+  application:
+    name: auth-frontier
+  redis:
+    #数据库索引
+    database: 1
+    host: ${yunhost}
+    port: 6379
+    #    password: 12345
+    jedis:
+      pool:
+        #最大连接数
+        max-active: 100
+        #最大阻塞等待时间(负数表示没限制)
+        max-wait: 2000
+        #最大空闲
+        max-idle: 500
+        #最小空闲
+        min-idle: 8
+    #连接超时时间
+    timeout: 5000
+
+server:
+  http:
+   port: 8100
+  port: 8085
+  ssl:
+    key-alias: client
+    key-store: client.p12
+    key-store-password: 123456
+    key-store-type: PKCS12
+#  port: 8085
+#  ssl:
+#    key-store: classpath:server.jks
+#    key-store-password: 4JkU6Wm!L3zvxSb
+#    keyStoreType: JKS
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://${yunhost}:8761/eureka
+
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled: true
+    corsEnabled: true
+
+seaboxdata:
+  core:
+    idgenerator:
+      mode: snowflake
+      datacenter: 1
+      worker: 1
+  auth:
+    hostname: localhost:8080
+  tag:
+    hostname: localhost:9010
+
+security:
+  oauth2:
+    client:
+      client-id: testclientid
+      client-secret: 123456
+      scope: read_userinfo
+      access-token-uri: ${auth-server-url}/oauth/token
+      user-authorization-uri: ${auth-server-url}/oauth/authorize
+    resource:
+      token-info-uri: ${auth-server-url}/oauth/check_token
+
+cookie:
+  access-cookie-time: 86400
+
+token:
+  domain: jinxin.cloud
+  access-token:
+    expiration-time: 600 # 60 * 60 * 12 * 2
+  #    expiration-time: 86400 # 60 * 60 * 12 * 2
+  refresh-token:
+    expiration-time: 2592000 # 60 * 60 * 12 * 2 * 30
+
+logging:
+  level:
+    "org.springframework": info
+
+ambry:
+  host: 10.1.1.176
+  port: 32708
+  temp-path: D:\ambry\tmp
+  ttl: 10800

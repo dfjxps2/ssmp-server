@@ -1,0 +1,51 @@
+type SkillInfoVo{
+
+    # 主键id
+    id: ID
+
+    # 用户id
+    userId: ID
+
+    # 技能名称
+    skillName: String
+
+    # 技能等级
+    skillLevel: String
+
+    # 相关认证
+    relatedCertification: String
+
+    # 描述
+    description: String
+
+}
+
+input SkillInfoDTO{
+    # 主键id
+    id:ID
+
+    # 用户id
+    userId: ID
+
+    # 技能名称
+    skillName: String
+
+    # 技能等级
+    skillLevel: String
+
+    # 相关认证
+    relatedCertification: String
+
+    # 描述
+    description: String
+
+}
+
+extend type Mutation {
+    # 保存技能信息
+    saveSkillInfo(input: SkillInfoDTO):ID
+    # 删除技能信息
+    deleteSkillInfo(id: ID): Boolean
+    # 更新技能信息
+    updateSkillInfo(input: SkillInfoDTO):Boolean
+}

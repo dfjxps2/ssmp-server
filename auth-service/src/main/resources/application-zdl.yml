@@ -1,0 +1,135 @@
+auth-server-url: http://localhost:30002
+
+server:
+  port: 30002
+  tomcat:
+    accesslog:
+      suffix: .log
+      prefix: access_log
+      file-date-format: .yyyy-MM-dd
+      directory: logs
+      pattern: common
+      enabled: true
+
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+
+spring:
+  application:
+    name: AUTH-SERVER
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: rootroot
+    url: jdbc:mysql://localhost:3306/auth-server-dev?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    hikari:
+      maximum-pool-size: 3
+  #  data:
+  #    mongodb:
+  #      uri: mongodb://mongodb.default/uc_server_${spring.profiles.active}
+  #      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    jedis:
+      pool:
+        max-active: 100
+        max-wait: 2000
+        max-idle: 500
+        min-idle: 8
+    timeout: 5000
+
+security:
+  oauth2:
+    client:
+      client-id: testclientid
+      client-secret: 123456
+      scope: read_userinfo
+      access-token-uri: ${auth-server-url}/oauth/token
+      user-authorization-uri: ${auth-server-url}/oauth/authorize
+    resource:
+      token-info-uri: ${auth-server-url}/oauth/check_token
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+
+
+seaboxdata:
+  core:
+    idgenerator:
+      mode: snowflake
+      datacenter: 1
+      worker: 1
+  auth:
+    hostname:
+    host:
+    url: http://${spring.application.name}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+token:
+  domain: localhost
+  access-token:
+    expiration-time: 600000 # 60 * 60 * 12 * 2
+  refresh-token:
+    expiration-time: 2592000 # 60 * 60 * 12 * 2 * 30
+
+logging:
+  level:
+    com.seaboxdata.auth.server.dao: DEBUG
+
+rocketmq:
+  name-server: 123.207.126.81:9876
+  producer:
+    send-message-timeout: 3000
+    group: auth
+    env: dev
+
+cas:
+  bj:
+    ws:
+      url: http://59.212.226.49:22001/portal/intlDataSynchronizedService?wsdl
+      appname:
+    server:
+      #cas验证路径
+      prefix: http://localhost:9302/cas
+      project: http://localhost:30002/
+    #cas过滤器拦截路径
+    intercept: /bj/cas/*
+    filter:
+      #设置cas过滤器配置是否开启
+      enabled: false
+    sync:
+      password: dfjx
+    home: http://localhost:8081
+  ws:
+    #webservice接口路径
+    url: http://106.52.132.19:18001/pcmss/intlDataSynchronizedService?wsdl
+  server:
+    #cas验证路径
+    prefix: http://118.126.103.216:17001/cas
+    project: ${auth-server-url}
+  #cas过滤器拦截路径
+  intercept: /cas/authDoLogin
+  filter:
+    #设置cas过滤器配置是否开启
+    enabled: false
+
+axis:
+  ca:
+    service:
+      # 请求用户信息需要，请跟ca集成确认申请
+      appId: 1
+      # axis服务路径
+      url: http://172.25.13.127:8081/zcpt/services/synInfoService
+      # 空间名
+      qname: http://service.auth.taiji.com

@@ -1,0 +1,21 @@
+extend type Mutation {
+    # 为用户单独赋予权限 #
+    saveOrUpdateUserPermission(input:OauthUserPermissionInput!):Boolean
+}
+
+# 单独赋予用户权限参数 #
+input OauthUserPermissionInput{
+
+    # 权限码Id #
+    permissionIds:[ID!]
+
+    # 用户Id #
+    userId:ID!
+
+    # 0:增 1:减 #
+    status:Int!
+
+    # 操作人Id #
+    operatorId:ID!
+
+}

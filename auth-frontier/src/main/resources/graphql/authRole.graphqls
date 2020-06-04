@@ -1,0 +1,54 @@
+##################
+#
+#   角色
+#
+##################
+extend type Query {
+    # 获取当前登录用户租户下所有角色列表 #
+    selectAllRole:[OauthRoleVO]
+    # 根据userId  获取 permissionCodes #
+    selectPermissionCodeByUserId(userId:ID!):[String]
+    # 保存 一个角色 -> 多个用户 #
+    saveOrUpdateUserRole(input:OauthUserRoleDTO):Boolean
+}
+
+extend type Mutation {
+    #  添加角色 同时赋权限 #
+    saveUpdateOauthRole(input:AuthSaveRoleInput!):Boolean
+    # 根据roleIds 删除角色 同时删除中间表 #
+    deleteOauthRole(input:[ID!]!):Boolean
+}
+
+input OauthUserRoleDTO{
+    roleId:ID!
+
+    addUserId:[ID]
+
+    deleteUserId:[ID]
+}
+
+input AuthSaveRoleInput{
+    # 角色Id #
+    id:ID
+
+    # 权限Id #
+    permissionsIds:[ID]
+
+    # 角色名称 #
+    roleName:String
+
+    # 角色码 #
+    roleCode:String
+
+    # 可用状态 0：不可用  1：可用 #
+    status:Int
+
+    # 角色父ID #
+    parentId:ID
+
+    # 租户Id #
+    tenantId:ID
+
+    # 角色描述 #
+    description:String
+}

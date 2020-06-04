@@ -1,0 +1,49 @@
+##################################################
+#
+#   租户信息
+#
+##################################################
+extend type Query {
+    # 根据租户条件  查询租户信息 #
+    selectTenantInfo(input:TenantInfoDTO!):[TenantInfoVO]
+}
+
+extend type Mutation {
+    # 保存修改租户信息 #
+    saveOrUpdateTenantInfo(input:[TenantInfoDTO]):Boolean
+
+    # 根据租户Ids 删除租户信息 #
+    deleteTenantInfoByTenantId(tenantIds:[ID]!):Boolean
+}
+
+input TenantInfoDTO{
+    # tenantInfoId  #
+    tenantInfoId:ID
+
+    # 虚拟货币：海贝值  #
+    virtualCurrency:ID
+
+    # 是否为drd资源负责租户 #
+    drdManager:Boolean
+
+    # 租户Id #
+    tenantId:ID
+}
+
+type TenantInfoVO{
+    # Id  #
+    tenantInfoId:ID
+
+    # 虚拟货币：海贝值  #
+    virtualCurrency:ID
+
+    # 租户ID  #
+    tenantId:ID
+
+    # 记录创建者  #
+    creator:ID
+
+    # 是否为drd资源负责租户 #
+    drdManager:Boolean
+
+}
